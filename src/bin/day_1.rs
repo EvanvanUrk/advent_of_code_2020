@@ -1,17 +1,13 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent_of_code_2020;
+
+use self::advent_of_code_2020::*;
 use std::io;
-use std::path::Path;
 
 fn main() {
-    let path = Path::new("day_1.txt");
-    let mut file = File::open(&path).expect("Error opening input file!");
-
-    let mut s = String::new();
-    file.read_to_string(&mut s).expect("Error reading input file!");
+    let input = get_input("day_1.txt");
 
     let mut numbers: Vec<i32> = Vec::new();
-    for string in s.split("\n") {
+    for string in input.split("\n") {
         match string.parse() {
             Err(_) => (),
             Ok(number) => numbers.push(number),
@@ -28,15 +24,13 @@ fn main() {
     io::stdin().read_line(&mut sum).expect("Failed to read input.");
     let sum: i32 = sum.trim().parse().expect("Failed to parse input, please enter a number.");
 
-    let len = numbers.len() as i32;
-
     let counter = PermutationCounter::new(
         amount_of_entries,
-        len
+        numbers.len() as i32,
     );
 
     let mut entry_indices = None;
-    for permutation in counter.into_iter() {
+    for permutation in counter {
         let current_sum = permutation.iter().fold(0, |acc, index| {
             acc + numbers[*index as usize]
         });

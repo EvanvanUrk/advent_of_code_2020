@@ -1,14 +1,10 @@
+extern crate advent_of_code_2020;
+
+use self::advent_of_code_2020::*;
 use regex::Regex;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
 
 fn main() {
-    let path = Path::new("day_2.txt");
-    let mut file = File::open(&path).expect("Error opening input file!");
-
-    let mut input = String::new();
-    file.read_to_string(&mut input).expect("Error reading input file!");
+    let input = get_input("day_2.txt");
 
     let lines = input.matches("\n").count();
     let mut passwords: Vec<Password> = Vec::with_capacity(lines);
@@ -19,16 +15,11 @@ fn main() {
         match regex.captures(line) {
             None => (),
             Some(caps) => {
-                let min_required = caps.get(1).unwrap().as_str().parse().expect("Could not parse input");
-                let max_required = caps.get(2).unwrap().as_str().parse().expect("Could not parse input");
-                let required_char: char = caps.get(3).unwrap().as_str().parse().expect("Could not parse input");
-                let password: String = String::from(caps.get(4).unwrap().as_str());
-
                 passwords.push(Password {
-                    min_required,
-                    max_required,
-                    required_char,
-                    password
+                    min_required: caps.get(1).unwrap().as_str().parse().expect("Could not parse input"),
+                    max_required: caps.get(2).unwrap().as_str().parse().expect("Could not parse input"),
+                    required_char: caps.get(3).unwrap().as_str().parse().expect("Could not parse input"),
+                    password: String::from(caps.get(4).unwrap().as_str()),
                 });
             }
         }
